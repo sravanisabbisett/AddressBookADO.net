@@ -37,7 +37,9 @@ namespace AddressBookADO.net
                             addressBookRepo.RetrivePersonsCityAndState(addressModel);
                             break;
                         case 4:
-                            addressBookRepo.OrderByFirstName();
+                            Console.WriteLine("Enter your city name to get the persons alphabetically");
+                            addressModel.City = Console.ReadLine();
+                            addressBookRepo.OrderByFirstName(addressModel);
                             break;
                         default:
                             Console.WriteLine("Please Enter correct option");

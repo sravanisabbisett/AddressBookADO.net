@@ -284,7 +284,7 @@ namespace AddressBookADO.net
         /// Orders the first name of the by.
         /// </summary>
         /// <exception cref="System.Exception"></exception>
-        public void OrderByFirstName()
+        public void OrderByFirstName(AddressModel model)
         {
             SqlConnection connection = new SqlConnection(connectionString);
             try
@@ -294,6 +294,7 @@ namespace AddressBookADO.net
                     AddressModel addressModel = new AddressModel();
                     SqlCommand command = new SqlCommand("OrderByFirstName", this.connection);
                     command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@City", model.City);
                     this.connection.Open();
                     SqlDataReader dataReader = command.ExecuteReader();
                     if (dataReader.HasRows)
@@ -310,6 +311,44 @@ namespace AddressBookADO.net
                     }
                     dataReader.Close();
                     this.connection.Close();
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Adds the type of the record to address book.
+        /// </summary>
+        /// <param name="addressModel">The address model.</param>
+        /// <returns></returns>
+        public bool AddRecordToAddressBookType(AddressModel addressModel)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("spAddAddressBookType", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@PersonType", addressModel.PersonType);
+                    command.Parameters.AddWithValue("@AddressBookName", addressModel.AddressBookName);
+                    this.connection.Open();
+                    var result = command.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             catch(Exception e)

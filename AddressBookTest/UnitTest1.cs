@@ -59,5 +59,15 @@ namespace AddressBookTest
             bool result = addressBookRepo.DeletePerson(addressModel);
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+        public void AddValueToAddressBookType()
+        {
+            AddressModel addressModel = new AddressModel();
+            addressModel.PersonType = "Profession";
+            addressModel.AddressBookName = "ProfessionAddressBook";
+            bool result = addressBookRepo.AddRecordToAddressBookType(addressModel);
+            Assert.IsTrue(result);
+        }
     }
 }
