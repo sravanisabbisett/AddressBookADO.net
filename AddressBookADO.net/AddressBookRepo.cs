@@ -360,5 +360,75 @@ namespace AddressBookADO.net
                 this.connection.Close();
             }
         }
+
+        public bool AddDataToPersonAddressBook(AddressModel addressModel)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("spAddPersonAddressBook", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@PersonId", addressModel.PersonId);
+                    command.Parameters.AddWithValue("@AddressBookId", addressModel.ABId);
+                    this.connection.Open();
+                    var result = command.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
+
+        public void RetriveDataFromPersonAddressBook()
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    AddressModel addressModel = new AddressModel();
+                    SqlCommand command = new SqlCommand("spRetrivePersonAddressBook", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    this.connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            addressModel.PersonId = reader.GetInt32(0);
+                            addressModel.ABId = reader.GetInt32(1);
+                            Console.WriteLine(addressModel.PersonId + " " + addressModel.ABId);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No data found");
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
     }
 }

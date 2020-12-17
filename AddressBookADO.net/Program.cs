@@ -12,7 +12,7 @@ namespace AddressBookADO.net
             while (true)
             {
                 Console.WriteLine("1)GetAllData\n" + "2)Retrive person by city or state\n"+"3)Retrive person city And Person\n"
-                                    +"4)Order by firstname");
+                                    +"4)Order by firstname\n"+"5)View PersonAddressBookdata");
 
                 try
                 {
@@ -40,6 +40,9 @@ namespace AddressBookADO.net
                             Console.WriteLine("Enter your city name to get the persons alphabetically");
                             addressModel.City = Console.ReadLine();
                             addressBookRepo.OrderByFirstName(addressModel);
+                            break;
+                         case 5:
+                            addressBookRepo.RetriveDataFromPersonAddressBook();
                             break;
                         default:
                             Console.WriteLine("Please Enter correct option");

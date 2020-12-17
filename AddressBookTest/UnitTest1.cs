@@ -23,14 +23,14 @@ namespace AddressBookTest
         public void InsertValueIntoPersonTable()
         {
             AddressModel addressModel = new AddressModel();
-            addressModel.Firstname = "Ranjitha";
-            addressModel.Lastname = "Ranji";
+            addressModel.Firstname = "Sravani";
+            addressModel.Lastname = "Sabbisetti";
             addressModel.Address = "GandhiChowk";
-            addressModel.City = "Machilipatnam";
+            addressModel.City = "Bantumilli";
             addressModel.State = "AndhraPradesh";
             addressModel.Zip = 789021;
-            addressModel.MobileNumber = "8328307888";
-            addressModel.EmailId = "Ranjitha@gmail.com";
+            addressModel.MobileNumber = "8712443378";
+            addressModel.EmailId = "Sravani@gmail.com";
             bool result = addressBookRepo.InsertData(addressModel);
             Assert.IsTrue(result);
         }
@@ -67,6 +67,16 @@ namespace AddressBookTest
             addressModel.PersonType = "Profession";
             addressModel.AddressBookName = "ProfessionAddressBook";
             bool result = addressBookRepo.AddRecordToAddressBookType(addressModel);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void AddPersonAddressBook()
+        {
+            AddressModel addressModel = new AddressModel();
+            addressModel.PersonId = 8;
+            addressModel.ABId = 1;
+            bool result = addressBookRepo.AddDataToPersonAddressBook(addressModel);
             Assert.IsTrue(result);
         }
     }
