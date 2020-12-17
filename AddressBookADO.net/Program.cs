@@ -44,6 +44,9 @@ namespace AddressBookADO.net
                          case 5:
                             addressBookRepo.RetriveDataFromPersonAddressBook();
                             break;
+                        case 6:
+                            addressBookRepo.CountByType();
+                            break;
                         default:
                             Console.WriteLine("Please Enter correct option");
                             break;

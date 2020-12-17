@@ -361,6 +361,12 @@ namespace AddressBookADO.net
             }
         }
 
+        /// <summary>
+        /// Adds the data to person address book.
+        /// </summary>
+        /// <param name="addressModel">The address model.</param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception"></exception>
         public bool AddDataToPersonAddressBook(AddressModel addressModel)
         {
             SqlConnection connection = new SqlConnection(connectionString);
@@ -394,6 +400,10 @@ namespace AddressBookADO.net
             }
         }
 
+        /// <summary>
+        /// Retrives the data from person address book.
+        /// </summary>
+        /// <exception cref="System.Exception"></exception>
         public void RetriveDataFromPersonAddressBook()
         {
             SqlConnection connection = new SqlConnection(connectionString);
@@ -431,6 +441,47 @@ namespace AddressBookADO.net
             }
         }
 
-
+        /// <summary>
+        /// Counts the type of the by.
+        /// </summary>
+        /// <exception cref="System.Exception"></exception>
+/        public void CountByType()
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    AddressModel addressModel = new AddressModel();
+                    SqlCommand command = new SqlCommand("spCountType", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    this.connection.Open();
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    if (dataReader.HasRows)
+                    {
+                        while (dataReader.Read())
+                        {
+                            addressModel.ABId = dataReader.GetInt32(0);
+                            addressModel.PersonType = dataReader.GetString(1);
+                            Console.WriteLine(addressModel.ABId + " " + addressModel.PersonType);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No data found");
+                    }
+                    dataReader.Close();
+                    this.connection.Close();
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
     }
 }
