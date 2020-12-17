@@ -65,6 +65,12 @@ namespace AddressBookADO.net
         }
 
 
+        /// <summary>
+        /// Inserts the data.
+        /// </summary>
+        /// <param name="addressModel">The address model.</param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception"></exception>
         public bool InsertData(AddressModel addressModel)
         {
             SqlConnection connection = new SqlConnection(connectionString);
@@ -101,6 +107,45 @@ namespace AddressBookADO.net
             finally
             {
                 this.connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Updates the data.
+        /// </summary>
+        /// <param name="addressModel">The address model.</param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception"></exception>
+        public bool UpdateData(AddressModel addressModel)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("spUpdatePerson", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@FirsstName", addressModel.Firstname);
+                    command.Parameters.AddWithValue("@State", addressModel.State);
+                    this.connection.Open();
+                    var result = command.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                connection.Close();
             }
         }
     }

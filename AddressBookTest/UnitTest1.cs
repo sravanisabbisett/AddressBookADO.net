@@ -34,5 +34,15 @@ namespace AddressBookTest
             bool result = addressBookRepo.InsertData(addressModel);
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+        public void UpdateData()
+        {
+            AddressModel addressModel = new AddressModel();
+            addressModel.Firstname = "Ranjitha";
+            addressModel.State = "Tamilnadu";
+            bool result = addressBookRepo.UpdateData(addressModel);
+            Assert.IsTrue(result);
+        }
     }
 }
