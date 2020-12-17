@@ -11,7 +11,7 @@ namespace AddressBookADO.net
             AddressModel addressModel = new AddressModel();
             while (true)
             {
-                Console.WriteLine("1)GetAllData\n" + "2)Retrive person by city or state");
+                Console.WriteLine("1)GetAllData\n" + "2)Retrive person by city or state\n"+"3)Retrive person city And Person");
 
                 try
                 {
@@ -29,12 +29,11 @@ namespace AddressBookADO.net
                             addressBookRepo.RetrivePersonsCityOrState(addressModel);
                             break;
                         case 3:
-                            break;
-                        case 4:
-                            break;
-                        case 5:
-                            break;
-                        case 6:
+                            Console.WriteLine("Enter your city");
+                            addressModel.City = Console.ReadLine();
+                            Console.WriteLine("Enter your state");
+                            addressModel.State = Console.ReadLine();
+                            addressBookRepo.RetrivePersonsCityAndState(addressModel);
                             break;
                         default:
                             Console.WriteLine("Please Enter correct option");

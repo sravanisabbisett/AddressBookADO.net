@@ -231,5 +231,48 @@ namespace AddressBookADO.net
                 this.connection.Close();
             }
         }
+
+
+        public void RetrivePersonsCityAndState(AddressModel addressModel)
+        {
+            SqlConnection connection = new SqlConnection();
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("spPersonsCityAndState", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@City", addressModel.City);
+                    command.Parameters.AddWithValue("@State", addressModel.State);
+                    this.connection.Open();
+                    SqlDataReader dr = command.ExecuteReader();
+                    //command.ExecuteNonQuery();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            addressModel.Firstname = dr.GetString(0);
+                            addressModel.City = dr.GetString(1);
+                            addressModel.State = dr.GetString(2);
+                            Console.WriteLine(addressModel.Firstname + "," + addressModel.City + "," + addressModel.State);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Data not found");
+                    }
+                    dr.Close();
+                    this.connection.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
     }
 }
