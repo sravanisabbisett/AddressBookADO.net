@@ -35,6 +35,9 @@ namespace AddressBookTest
             Assert.IsTrue(result);
         }
 
+        /// <summary>
+        /// Updates the data.
+        /// </summary>
         [TestMethod]
         public void UpdateData()
         {
@@ -42,6 +45,18 @@ namespace AddressBookTest
             addressModel.Firstname = "Ranjitha";
             addressModel.State = "Tamilnadu";
             bool result = addressBookRepo.UpdateData(addressModel);
+            Assert.IsTrue(result);
+        }
+
+        /// <summary>
+        /// Deletes the person.
+        /// </summary>
+        [TestMethod]
+        public void DeletePerson()
+        {
+            AddressModel addressModel = new AddressModel();
+            addressModel.Firstname = "Sravani";
+            bool result = addressBookRepo.DeletePerson(addressModel);
             Assert.IsTrue(result);
         }
     }
