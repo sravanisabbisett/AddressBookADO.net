@@ -62,7 +62,46 @@ namespace AddressBookADO.net
             {
                 this.connection.Close();
             }
+        }
 
+
+        public bool InsertData(AddressModel addressModel)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("spAddPerson", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@FirstName", addressModel.Firstname);
+                    command.Parameters.AddWithValue("@LastName", addressModel.Lastname);
+                    command.Parameters.AddWithValue("@Address", addressModel.Address);
+                    command.Parameters.AddWithValue("@City", addressModel.City);
+                    command.Parameters.AddWithValue("@State", addressModel.State);
+                    command.Parameters.AddWithValue("@Zip", addressModel.Zip);
+                    command.Parameters.AddWithValue("@MobileNumber", addressModel.MobileNumber);
+                    command.Parameters.AddWithValue("@EmailId", addressModel.EmailId);
+                    this.connection.Open();
+                    var result = command.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
         }
     }
 }
