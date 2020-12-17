@@ -233,6 +233,11 @@ namespace AddressBookADO.net
         }
 
 
+        /// <summary>
+        /// Retrives the state of the persons city and.
+        /// </summary>
+        /// <param name="addressModel">The address model.</param>
+        /// <exception cref="System.Exception"></exception>
         public void RetrivePersonsCityAndState(AddressModel addressModel)
         {
             SqlConnection connection = new SqlConnection();
@@ -266,6 +271,48 @@ namespace AddressBookADO.net
                 }
             }
             catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Orders the first name of the by.
+        /// </summary>
+        /// <exception cref="System.Exception"></exception>
+        public void OrderByFirstName()
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    AddressModel addressModel = new AddressModel();
+                    SqlCommand command = new SqlCommand("OrderByFirstName", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    this.connection.Open();
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    if (dataReader.HasRows)
+                    {
+                        while (dataReader.Read())
+                        {
+                            addressModel.Firstname = dataReader.GetString(0);
+                            Console.WriteLine(addressModel.Firstname);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No data found");
+                    }
+                    dataReader.Close();
+                    this.connection.Close();
+                }
+            }
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }
