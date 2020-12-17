@@ -12,7 +12,7 @@ namespace AddressBookADO.net
             while (true)
             {
                 Console.WriteLine("1)GetAllData\n" + "2)Retrive person by city or state\n"+"3)Retrive person city And Person\n"
-                                    +"4)Order by firstname\n"+"5)View PersonAddressBookdata");
+                                    +"4)Order by firstname\n"+"5)View PersonAddressBookdata\n"+"7)CountBy type");
 
                 try
                 {

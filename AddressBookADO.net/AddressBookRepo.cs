@@ -445,7 +445,7 @@ namespace AddressBookADO.net
         /// Counts the type of the by.
         /// </summary>
         /// <exception cref="System.Exception"></exception>
-/        public void CountByType()
+        public void CountByType()
         {
             SqlConnection connection = new SqlConnection(connectionString);
             try
