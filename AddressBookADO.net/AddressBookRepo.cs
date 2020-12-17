@@ -184,5 +184,52 @@ namespace AddressBookADO.net
                 this.connection.Close();
             }
         }
+
+        /// <summary>
+        /// Retrives the state of the persons city or.
+        /// </summary>
+        /// <param name="addressModel">The address model.</param>
+        /// <exception cref="System.Exception"></exception>
+        public void RetrivePersonsCityOrState(AddressModel addressModel)
+        {
+            SqlConnection connection = new SqlConnection();
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("spPersonsCityorState", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@City", addressModel.City);
+                    command.Parameters.AddWithValue("@State", addressModel.State);
+                    this.connection.Open();
+                    SqlDataReader dr = command.ExecuteReader();
+                    //command.ExecuteNonQuery();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            addressModel.Firstname = dr.GetString(0);
+                            addressModel.City = dr.GetString(1);
+                            addressModel.State = dr.GetString(2);
+                            Console.WriteLine(addressModel.Firstname + "," + addressModel.City + "," + addressModel.State);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Data not found");
+                    }
+                    dr.Close();
+                    this.connection.Close();
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
     }
 }

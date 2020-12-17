@@ -8,8 +8,57 @@ namespace AddressBookADO.net
         {
             Console.WriteLine("Welcome to addressBook");
             AddressBookRepo addressBookRepo = new AddressBookRepo();
-            addressBookRepo.GetAllData();
+            AddressModel addressModel = new AddressModel();
+            while (true)
+            {
+                Console.WriteLine("1)GetAllData\n" + "2)Retrive person by city or state");
+
+                try
+                {
+                    var choice = Convert.ToInt32(Console.ReadLine());
+                    switch (choice)
+                    {
+                        case 1:
+                            addressBookRepo.GetAllData();
+                            break;
+                        case 2:
+                            Console.WriteLine("Enter your city");
+                            addressModel.City = Console.ReadLine();
+                            Console.WriteLine("Enter your state");
+                            addressModel.State = Console.ReadLine();
+                            addressBookRepo.RetrivePersonsCityOrState(addressModel);
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                        case 6:
+                            break;
+                        default:
+                            Console.WriteLine("Please Enter correct option");
+                            break;
+                    }
+                    Console.WriteLine("Do you want to continue(Y / N) ? ");
+                    var variable = Console.ReadLine();
+                    if (variable.Equals("y"))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                catch (System.FormatException formatException)
+                {
+                    Console.WriteLine(formatException.Message);
+                }
+
+            }
             Console.ReadKey();
         }
     }
 }
+
