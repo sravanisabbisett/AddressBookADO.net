@@ -483,5 +483,41 @@ namespace AddressBookADO.net
                 this.connection.Close();
             }
         }
+
+        public void CountByCityOrState(AddressModel addressModel)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("countByCityOrState", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@City", addressModel.City);
+                    command.Parameters.AddWithValue("@State", addressModel.State);
+                    this.connection.Open();
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    if (dataReader.HasRows)
+                    {
+                        while (dataReader.Read())
+                        {
+                            Console.WriteLine("No of persons in that city or state:"+dataReader.GetInt32(0));
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Data not found");
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
     }
 }

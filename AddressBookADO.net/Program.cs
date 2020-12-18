@@ -12,7 +12,7 @@ namespace AddressBookADO.net
             while (true)
             {
                 Console.WriteLine("1)GetAllData\n" + "2)Retrive person by city or state\n"+"3)Retrive person city And Person\n"
-                                    +"4)Order by firstname\n"+"5)View PersonAddressBookdata\n"+"7)CountBy type");
+                                    +"4)Order by firstname\n"+"5)View PersonAddressBookdata\n"+"6)CountBy type\n"+"7)Count by city or state");
 
                 try
                 {
@@ -46,6 +46,13 @@ namespace AddressBookADO.net
                             break;
                         case 6:
                             addressBookRepo.CountByType();
+                            break;
+                        case 7:;
+                            Console.WriteLine("Enter your city");
+                            addressModel.City = Console.ReadLine();
+                            Console.WriteLine("Enter your state");
+                            addressModel.State = Console.ReadLine();
+                            addressBookRepo.CountByCityOrState(addressModel);
                             break;
                         default:
                             Console.WriteLine("Please Enter correct option");
