@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Threading;
 
 namespace AddressBookADO.net
 {
@@ -491,7 +492,7 @@ namespace AddressBookADO.net
             {
                 using (connection)
                 {
-                    SqlCommand command = new SqlCommand("countByCityOrState", this.connection);
+                    SqlCommand command = new SqlCommand("spcountByCityOrState", this.connection);
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@City", addressModel.City);
                     command.Parameters.AddWithValue("@State", addressModel.State);
@@ -518,6 +519,75 @@ namespace AddressBookADO.net
             {
                 this.connection.Close();
             }
+        }
+
+        /// <summary>
+        /// Insers the data to multiple tables.
+        /// </summary>
+        /// <param name="addressModel">The address model.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public bool InserDataToMultipleTables(AddressModel addressModel)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            try
+            {
+                using (connection)
+                {
+                    SqlCommand command = new SqlCommand("AddValuesInMultipleTables", this.connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@FirstName", addressModel.Firstname);
+                    command.Parameters.AddWithValue("@LastName", addressModel.Lastname);
+                    command.Parameters.AddWithValue("@Address", addressModel.Address);
+                    command.Parameters.AddWithValue("@City", addressModel.City);
+                    command.Parameters.AddWithValue("@State", addressModel.State);
+                    command.Parameters.AddWithValue("@Zip", addressModel.Zip);
+                    command.Parameters.AddWithValue("@MobileNumber", addressModel.MobileNumber);
+                    command.Parameters.AddWithValue("@EmailId", addressModel.EmailId);
+                    command.Parameters.AddWithValue("@AddressBookId", addressModel.ABId);
+                    this.connection.Open();
+                    var result = command.ExecuteNonQuery();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+        }
+
+
+        /// <summary>
+        /// Adds the data with multiple data with threading.
+        /// </summary>
+        /// <param name="addressModels">The address models.</param>
+        /// <returns></returns>
+        public bool AddDataWithMultipleDataWithThreading(List<AddressModel> addressModels)
+        {
+            bool result = false;
+            addressModels.ForEach(addressData =>
+            {
+                Thread thread = new Thread(() =>
+                {
+                    result = InserDataToMultipleTables(addressData);
+                    Console.WriteLine("Person Added:" + addressData.Firstname);
+
+                });
+                thread.Start();
+                thread.Join();
+            });
+            return result;
         }
     }
 }
